@@ -30,7 +30,8 @@ def make_shell_context():
     return dict(app=app,
                 db=db,
                 Community=Community,
-                Reports=Reports, Comments=Comments)
+                Reports=Reports, 
+                Comments=Comments)
 
 
 if __name__ == '__main__':
