@@ -1,9 +1,10 @@
 from flask import render_template, request, redirect, url_for
 from . import main
 from .forms import ReportForm, CommentForm
-from ..models import Reports, Comments  # Community,
+from ..models import Reports, Comments,Community
 from flask_login import login_required, current_user
 from .. import db, photos
+from ..email import mail_message
 
 
 @main.route('/')
@@ -19,6 +20,7 @@ def index():
 @main.route('/reportForm', methods=['GET', 'POST'])
 def reportForm():
     report_form = ReportForm()
+    community = Community.query.all()
 
     if report_form.validate_on_submit():
         location = report_form.location.data
@@ -50,6 +52,8 @@ def reportForm():
                                  description=description)
         db.session.add(new_report)
         db.session.commit()
+        for person in community:
+            mail_message("New Report!","email/new_report",person.email)
         return redirect(url_for('main.index'))
 
     return render_template('reportForm.html', report_form=report_form)
