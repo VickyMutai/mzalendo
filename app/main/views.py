@@ -1,11 +1,10 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for,abort
 from . import main
 from .forms import ReportForm, CommentForm
 from ..models import Reports, Comments,Community
 from flask_login import login_required, current_user
 from .. import db, photos
 from ..email import mail_message
-
 
 @main.route('/')
 def index():
@@ -60,6 +59,7 @@ def reportForm():
 
 
 @main.route('/reports')
+@login_required
 def report():
     # TODO: Add voting to this new page. So that comm members can vote.
     reports = Reports.query.all()

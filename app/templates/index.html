@@ -1,1 +1,4 @@
 <h1>{{test}}</h1>
+{% if current_user.is_authenticated %}
+<h1><a href="{{url_for('auth.logout')}}">Logout</a></h1>
+{% endif %}
