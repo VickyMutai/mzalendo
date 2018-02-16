@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Write a View</h1>
+<div class="container">
+    <form action method="post" class="form" role="form">
+        <div class="row mt-3">
+            {{comment_form.hidden_tag()}} {{comment_form.comment(class_='form-control', placeholder="Write a review")}}
+        </div>
+        <div class="row mt-3">
+                {{comment_form.verified.label}}
+              </div>
+              <div class="row form-check form-check-inline ">
+                {{comment_form.hidden_tag()}} {{comment_form.verified(class_='form-check-input')}}
+        </div>
+        <div class="row mt-3">
+            {{comment_form.submit(class_="btn btn-outline-primary")}}
+        </div>
+    </form>
+</div>
+{% endblock %}

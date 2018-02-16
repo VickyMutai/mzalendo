@@ -46,10 +46,12 @@ class ReportForm(FlaskForm):
                                                  ('harrasment', 'Harrasment')],
                        validators=[Required()])
 
-    description = TextAreaField('What happed?', validators=[Required()])
+    description = TextAreaField('What happened?', validators=[Required()])
     submit = SubmitField('Submit')
 
 
 class CommentForm(FlaskForm):
     comment = TextAreaField('Comment', validators=[Required()])
+    verified = RadioField('Verification',choices=[('True','Verified'),
+                                                  ('False','Unverified')],validators=[Required()])
     submit = SubmitField('Submit')

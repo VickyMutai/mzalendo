@@ -64,7 +64,9 @@ def report():
     # TODO: Add voting to this new page. So that comm members can vote.
     reports = Reports.query.all()
 
-    return render_template('reports.html', reports=reports)
+    #return redirect(url_for('main.report'))
+
+    return render_template('reports.html',reports=reports)
 
 
 @main.route('/report/<int:id>', methods=['POST'])
@@ -78,18 +80,36 @@ def update_report(id):
         db.session.commit()
     return redirect(url_for('main.new'))
 
+# view single report
+@main.route('/report/<int:id>')
+@login_required
+def view_report(id):
+    form = ReportForm()
+    member = Community.query.filter_by(id=id).first()
+    report = Reports.query.filter_by(id=id).first()
 
-@main.route('/comment<int:id>')
+    comments =  Comments.get_comments(id)
+
+    title = 'Uzalendo'
+    return render_template('reportReview.html',comments=comments,
+                                               title=title,report=report,
+                                               report_form=form,user=current_user)
+
+@main.route('/comment/new/<int:id>', methods=['GET','POST'])
 @login_required
 def comments(id):
+    report = Reports.query.filter_by(id=id).first()
     comment_form = CommentForm()
-    report = Reports.query.filter_by(id=id)
 
     if comment_form.validate_on_submit():
         comment = comment_form.comment.data
-        new_comment = Comments(comment=comment, user=current_user)
-        db.session.commit(new_comment)
-        return redirect(url_for('main.index'))
+        verified = comment_form.verified.data
+        new_comment = Comments(comment=comment,verified=verified,user=current_user)
+        db.session.add(new_comment)
+        db.session.commit()
+        return redirect(url_for('main.view_report',id=report.id))
 
-    return render_template('comments.html', report=report,
-                           comment_form=comment_form)
+    title = 'Uzalendo'
+    return render_template('comments.html',title=title,
+                                           report=report,
+                                           comment_form=comment_form)

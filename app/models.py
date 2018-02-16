@@ -53,7 +53,7 @@ class Reports(db.Model):
     video_path = db.Column(db.String)
     upvote = db.Column(db.Integer)
     downvote = db.Column(db.Integer)
-    posted = db.Column(db.DateTime, default=datetime.utcnow)
+    posted = db.Column(db.DateTime, default=datetime.now())
     comment = db.relationship('Comments', backref='report', lazy='dynamic')
 
     def __init__(self,
@@ -62,8 +62,10 @@ class Reports(db.Model):
                  department,
                  category,
                  title,
+                 user,
                  description):
 
+        self.user = user
         self.location = location
         self.institution = institution
         self.department = department
@@ -86,14 +88,15 @@ class Comments(db.Model):
     # add columns
     id = db.Column(db. Integer, primary_key=True)
     comment = db.Column(db.String(255))
-    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
+    verified = db.Column(db.String(255))
+    date_posted = db.Column(db.DateTime, default=datetime.now())
     community_id = db.Column(db.Integer, db.ForeignKey("community_members.id"))
     report_id = db.Column(db.Integer, db.ForeignKey("reports.id"))
 
-    def __init__(self, comment, date_posted, community_id):
+    def __init__(self,user,verified, comment):
         self.comment = comment
-        self.date_posted = date_posted
-        self.community_id = community_id
+        self.user = user
+        self.verified = verified
 
     def save_comment(self):
         '''

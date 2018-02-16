@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+                <h1>{{report.institution | upper}}</h1>
+                <p>Category: <b>{{report.category}}</b></p>
+                <p>Department: <b>{{report.department}}</b></p>
+                <p>Constituency: <i>{{report.location}}</i>, Nairobi</p>
+                <p>The type of crime is <i><b>{{report.title | upper}}</b></i></p>
+                <p>{{report.description}}</p>
+
+                <button class="btn btn-default"><a href="/comment/new/{{report.id}}">Review/Verify the Report</a></button>
+        </div>
+        <div class="col-md-6 col-lg-6">
+            <h1>Reviews</h1>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}
